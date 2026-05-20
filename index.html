@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KRISÁLIDA CALCULADORA</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet"/>
+
+<style>
+
+/* ========================================
+   KRISÁLIDA CALCULADORA OFICIAL
+======================================== */
+
+:root{
+
+  /* COLORES KRISALIDA */
+
+  --celeste:#38bdf8;
+  --azul:#1d4ed8;
+  --dorado:#facc15;
+
+  --fondo:#020617;
+  --card:#0f172a;
+  --pantalla:#000814;
+
+  --texto:#e2e8f0;
+  --texto2:#94a3b8;
+
+}
+
+/* BODY */
+
+body{
+
+  margin:0;
+
+  min-height:100vh;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  overflow:hidden;
+
+  background:
+  radial-gradient(circle at top left,#38bdf833,transparent 25%),
+  radial-gradient(circle at bottom right,#facc1522,transparent 25%),
+  linear-gradient(135deg,#020617,#0f172a,#1e3a8a);
+
+  font-family:'Nunito',sans-serif;
+
+  color:white;
+
+}
+
+/* PARTICULAS */
+
+body::before{
+
+  content:'';
+
+  position:absolute;
+
+  width:100%;
+
+  height:100%;
+
+  top:0;
+
+  left:0;
+
+  background-image:
+  radial-gradient(#facc15 1.2px, transparent 1.2px),
+  radial-gradient(#fde68a 1px, transparent 1px),
+  radial-gradient(#fff7cc .8px, transparent .8px);
+
+  background-size:
+  70px 70px,
+  120px 120px,
+  180px 180px;
+
+  animation: lluviaOro 12s linear infinite;
+
+  opacity:.55;
+
+}
+
+
+
+/* LLUVIA DE ORO */
+
+@keyframes lluviaOro{
+
+  from{
+
+    transform:translateY(-100px);
+
+  }
+
+  to{
+
+    transform:translateY(100vh);
+
+  }
+
+}
+
+/* CARD */
+
+.calc-card{
+
+  position:relative;
+
+  width:360px;
+
+  padding:28px;
+
+  border-radius:35px;
+
+  background:rgba(15,23,42,.88);
+
+  backdrop-filter:blur(15px);
+
+  border:1px solid rgba(255,255,255,.08);
+
+  box-shadow:
+  0 0 30px #38bdf855,
+  0 0 60px #1d4ed833,
+  0 20px 45px rgba(0,0,0,.7);
+
+  overflow:hidden;
+
+}
+
+/* BRILLOS */
+
+.calc-card::before{
+
+  content:'';
+
+  position:absolute;
+
+  width:220px;
+
+  height:220px;
+
+  background:#38bdf822;
+
+  border-radius:50%;
+
+  top:-80px;
+
+  right:-80px;
+
+  filter:blur(60px);
+
+}
+
+.calc-card::after{
+
+  content:'';
+
+  position:absolute;
+
+  width:180px;
+
+  height:180px;
+
+  background:#facc1522;
+
+  border-radius:50%;
+
+  bottom:-70px;
+
+  left:-70px;
+
+  filter:blur(60px);
+
+}
+
+/* HEADER */
+
+.calc-header{
+
+  position:relative;
+
+  z-index:2;
+
+  text-align:center;
+
+  margin-bottom:20px;
+
+}
+
+.calc-header h1{
+
+  margin:0;
+
+  font-size:2rem;
+
+  font-weight:900;
+
+  letter-spacing:3px;
+
+  font-family:'Orbitron',sans-serif;
+
+  background:linear-gradient(90deg,var(--celeste),var(--dorado));
+
+  -webkit-background-clip:text;
+
+  -webkit-text-fill-color:transparent;
+
+}
+
+.calc-header p{
+
+  margin-top:5px;
+
+  font-size:.8rem;
+
+  color:var(--texto2);
+
+  letter-spacing:3px;
+
+}
+
+/* DISPLAY */
+
+.display-box{
+
+  position:relative;
+
+  z-index:2;
+
+  background:rgba(0,8,20,.95);
+
+  border-radius:22px;
+
+  padding:18px;
+
+  margin-bottom:22px;
+
+  border:1px solid rgba(255,255,255,.06);
+
+  text-align:right;
+
+}
+
+#expresion{
+
+  min-height:22px;
+
+  color:var(--dorado);
+
+  font-size:.9rem;
+
+  font-family:'Orbitron',sans-serif;
+
+}
+
+#pantalla{
+
+  font-size:2.8rem;
+
+  color:var(--celeste);
+
+  text-shadow:0 0 15px #38bdf888;
+
+  font-family:'Orbitron',sans-serif;
+
+  word-wrap:break-word;
+
+}
+
+/* GRID */
+
+.grid-teclado{
+
+  position:relative;
+
+  z-index:2;
+
+  display:grid;
+
+  grid-template-columns:repeat(4,1fr);
+
+  gap:14px;
+
+}
+
+/* BOTONES */
+
+.btn-calc{
+
+  height:62px;
+
+  border:none;
+
+  border-radius:18px;
+
+  cursor:pointer;
+
+  font-size:1.2rem;
+
+  font-weight:900;
+
+  transition:.15s;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  user-select:none;
+
+}
+
+/* NUMEROS */
+
+.btn-num{
+
+  background:linear-gradient(145deg,#e0f2fe,#bae6fd);
+
+  color:#082f49;
+
+  box-shadow:
+  inset 0 1px 0 #ffffff88,
+  0 5px 0 #38bdf8;
+
+}
+
+.btn-num:hover{
+
+  transform:translateY(-3px);
+
+}
+
+.btn-num:active{
+
+  transform:translateY(3px);
+
+  box-shadow:0 1px 0 #38bdf8;
+
+}
+
+/* OPERACIONES */
+
+.btn-op{
+
+  background:linear-gradient(145deg,#1e3a8a,#1d4ed8);
+
+  color:white;
+
+  box-shadow:
+  inset 0 1px 0 #ffffff22,
+  0 5px 0 #172554;
+
+}
+
+.btn-op:hover{
+
+  filter:brightness(1.1);
+
+}
+
+.btn-op:active{
+
+  transform:translateY(3px);
+
+  box-shadow:0 1px 0 #172554;
+
+}
+
+/* CLEAR */
+
+.btn-c{
+
+  background:linear-gradient(145deg,#ca8a04,#facc15);
+
+  color:#1e293b;
+
+  box-shadow:
+  inset 0 1px 0 #ffffff33,
+  0 5px 0 #a16207;
+
+}
+
+/* IGUAL */
+
+.btn-igual{
+
+  background:linear-gradient(145deg,#38bdf8,#1d4ed8);
+
+  color:white;
+
+  grid-column:span 2;
+
+  box-shadow:
+  inset 0 1px 0 #ffffff33,
+  0 5px 0 #172554;
+
+}
+
+.btn-igual:hover{
+
+  filter:brightness(1.08);
+
+}
+
+/* PRIMO */
+
+.btn-primo{
+
+  grid-column:span 4;
+
+  height:52px;
+
+  background:linear-gradient(90deg,#1d4ed8,#38bdf8,#facc15);
+
+  color:white;
+
+  font-size:.9rem;
+
+  letter-spacing:1px;
+
+  box-shadow:
+  inset 0 1px 0 #ffffff22,
+  0 5px 0 #1e3a8a;
+
+}
+
+/* FOOTER */
+
+.info-footer{
+
+  position:relative;
+
+  z-index:2;
+
+  margin-top:18px;
+
+  text-align:center;
+
+  color:#94a3b8;
+
+  font-size:.75rem;
+
+  letter-spacing:2px;
+
+}
+
+/* RESPONSIVE */
+
+@media(max-width:500px){
+
+  .calc-card{
+
+    width:92%;
+
+    padding:22px;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="calc-card">
+
+<div class="calc-header">
+
+<h1>KRISÁLIDA</h1>
+
+<p>CALCULADORA OFICIAL</p>
+
+</div>
+
+<div class="display-box">
+
+<div id="expresion"></div>
+
+<div id="pantalla">0</div>
+
+</div>
+
+<div class="grid-teclado">
+
+<button class="btn-calc btn-c" onclick="limpiar()">C</button>
+
+<button class="btn-calc btn-op" onclick="borrar()">⌫</button>
+
+<button class="btn-calc btn-op" onclick="setOp('%')">%</button>
+
+<button class="btn-calc btn-op" onclick="setOp('/')">÷</button>
+
+<button class="btn-calc btn-num" onclick="num('7')">7</button>
+
+<button class="btn-calc btn-num" onclick="num('8')">8</button>
+
+<button class="btn-calc btn-num" onclick="num('9')">9</button>
+
+<button class="btn-calc btn-op" onclick="setOp('*')">×</button>
+
+<button class="btn-calc btn-num" onclick="num('4')">4</button>
+
+<button class="btn-calc btn-num" onclick="num('5')">5</button>
+
+<button class="btn-calc btn-num" onclick="num('6')">6</button>
+
+<button class="btn-calc btn-op" onclick="setOp('-')">−</button>
+
+<button class="btn-calc btn-num" onclick="num('1')">1</button>
+
+<button class="btn-calc btn-num" onclick="num('2')">2</button>
+
+<button class="btn-calc btn-num" onclick="num('3')">3</button>
+
+<button class="btn-calc btn-op" onclick="setOp('+')">+</button>
+
+<button class="btn-calc btn-num" style="grid-column: span 2;" onclick="num('0')">0</button>
+
+<button class="btn-calc btn-num" onclick="punto()">.</button>
+
+<button class="btn-calc btn-igual" onclick="igual()">=</button>
+
+<button class="btn-calc btn-primo" onclick="esPrimo()">
+Verificar Número Primo
+</button>
+
+</div>
+
+<div class="info-footer">
+
+KRISÁLIDA • LIVE MUSIC • PERFORMANCE
+
+</div>
+
+</div>
+
+<script>
+
+let a = '';
+let b = '';
+let op = '';
+let reset = false;
+
+const pantalla = document.getElementById('pantalla');
+const expresion = document.getElementById('expresion');
+
+function render(){
+
+  pantalla.innerText = (op === '' ? a : b) || '0';
+
+  expresion.innerText = op === '' ? '' : `${a} ${op} ${b}`;
+
+}
+
+function num(n){
+
+  if(reset){
+
+    a = '';
+    b = '';
+    op = '';
+    reset = false;
+
+  }
+
+  if(op === ''){
+
+    a += n;
+
+  }else{
+
+    b += n;
+
+  }
+
+  render();
+
+}
+
+function punto(){
+
+  if(op === ''){
+
+    if(!a.includes('.')){
+
+      a += (a === '' ? '0.' : '.');
+
+    }
+
+  }else{
+
+    if(!b.includes('.')){
+
+      b += (b === '' ? '0.' : '.');
+
+    }
+
+  }
+
+  render();
+
+}
+
+function setOp(o){
+
+  if(a === ''){
+
+    a = '0';
+
+  }
+
+  if(b !== ''){
+
+    igual();
+
+  }
+
+  op = o;
+
+  reset = false;
+
+  render();
+
+}
+
+function igual(){
+
+  if(a === '' || b === '' || op === '') return;
+
+  let n1 = parseFloat(a);
+  let n2 = parseFloat(b);
+
+  let res = 0;
+
+  switch(op){
+
+    case '+':
+      res = n1 + n2;
+    break;
+
+    case '-':
+      res = n1 - n2;
+    break;
+
+    case '*':
+      res = n1 * n2;
+    break;
+
+    case '/':
+      res = n2 !== 0 ? n1 / n2 : 'Error';
+    break;
+
+    case '%':
+      res = n1 % n2;
+    break;
+
+  }
+
+  a = String(res);
+
+  b = '';
+
+  op = '';
+
+  reset = true;
+
+  render();
+
+}
+
+function limpiar(){
+
+  a = '';
+  b = '';
+  op = '';
+  reset = false;
+
+  render();
+
+}
+
+function borrar(){
+
+  if(op === ''){
+
+    a = a.slice(0,-1);
+
+  }else{
+
+    b = b.slice(0,-1);
+
+  }
+
+  render();
+
+}
+
+function esPrimo(){
+
+  let n = parseInt(pantalla.innerText);
+
+  if(isNaN(n) || n < 2){
+
+    alert("No es primo");
+
+    return;
+
+  }
+
+  for(let i = 2; i <= Math.sqrt(n); i++){
+
+    if(n % i === 0){
+
+      alert(n + " no es primo");
+
+      return;
+
+    }
+
+  }
+
+  alert("✨ " + n + " SÍ es un número primo");
+
+}
+
+render();
+
+</script>
+
+</body>
+
+</html>
